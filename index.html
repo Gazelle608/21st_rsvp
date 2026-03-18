@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Zilla+Slab:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ------- same beautiful boho styling as before ------- */
         * {
             margin: 0;
             padding: 0;
@@ -381,7 +380,7 @@
     <div class="card">
         <h1>
             <i class="fas fa-feather-alt"></i> 
-            21st · Boho birth 
+            21st · Boho birthday RSVP
             <i class="fas fa-moon"></i>
         </h1>
         <div class="subhead">
@@ -606,7 +605,7 @@
                 // This runs after the form submission returns (even if it's an empty response)
                 // We'll show a success message, but note: Google script often returns nothing.
                 if (submitBtn.disabled) {  // if we actually triggered a submission
-                    feedbackDiv.innerText = '✔️ RSVP sent (only you can see this). thank you!';
+                    feedbackDiv.innerText = '✔️ RSVP sent (only host can see this). thank you!';
                     feedbackDiv.classList.add('show');
                     setTimeout(() => feedbackDiv.classList.remove('show'), 4000);
                     submitBtn.disabled = false;  // re-enable for possible later edits (optional)
