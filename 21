@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boho 21st · RSVP (working sheet fix)</title>
+    <!-- Google Fonts & icons (boho vibe) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Zilla+Slab:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ------- same beautiful boho styling as before ------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f9f1e9;
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background-image: radial-gradient(circle at 30% 40%, rgba(226, 196, 168, 0.2) 0%, transparent 25%),
+                              radial-gradient(circle at 80% 70%, rgba(184, 152, 123, 0.15) 0%, transparent 30%),
+                              url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 L35 20 L50 20 L38 30 L43 45 L30 36 L17 45 L22 30 L10 20 L25 20 Z" fill="rgba(199, 162, 133, 0.1)" stroke="none"/></svg>');
+            background-size: auto, auto, 80px 80px;
+        }
+        .card {
+            max-width: 750px;
+            width: 100%;
+            background: rgba(255, 250, 240, 0.8);
+            backdrop-filter: blur(6px);
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            box-shadow: 0 20px 40px -10px rgba(90, 60, 40, 0.3), 0 8px 15px rgba(120, 80, 50, 0.15), inset 0 2px 5px rgba(255, 245, 235, 0.8);
+            padding: 2rem 2rem 2.8rem;
+            border: 2px solid #ebd8c4;
+            position: relative;
+            transition: 0.25s;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 20px;
+            right: 20px;
+            height: 22px;
+            background: repeating-linear-gradient(45deg, #dbbc9e 0px, #dbbc9e 8px, transparent 8px, transparent 16px);
+            opacity: 0.3;
+            border-radius: 0 0 20px 20px;
+            pointer-events: none;
+        }
+        h1, h2 {
+            font-family: 'Zilla Slab', serif;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: #5e3c28;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 0 #f0dfcf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        h1 i {
+            font-size: 2.3rem;
+            color: #b38b6d;
+            opacity: 0.8;
+        }
+        .subhead {
+            text-align: center;
+            font-style: italic;
+            color: #7a5a44;
+            border-top: 2px dashed #cfb69b;
+            border-bottom: 2px dashed #cfb69b;
+            padding: 0.7rem 0;
+            margin: 1.2rem 0 1.8rem;
+            font-size: 1.2rem;
+            background: rgba(239, 221, 204, 0.25);
+        }
+        .countdown-box {
+            background: #e7d7c0;
+            border-radius: 100px 100px 30px 30px;
+            padding: 1.8rem 1rem;
+            margin: 1.5rem 0 2rem;
+            box-shadow: inset 0 -3px 0 #b39276, 0 10px 15px -10px #7f6248;
+            border: 1px solid #ffe8d9;
+        }
+        .countdown-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #6b4f3a;
+            text-align: center;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+        }
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem 2rem;
+            flex-wrap: wrap;
+        }
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+        .time-num {
+            font-size: 2.8rem;
+            line-height: 1;
+            font-weight: 600;
+            color: #3f2c1b;
+            background: #fef7ed;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px 5px 15px 5px;
+            box-shadow: 0 5px 0 #c9ad91;
+            width: 100%;
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+        }
+        .time-label {
+            margin-top: 0.4rem;
+            color: #5f4a36;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        /* guest login panel */
+        .guest-login-panel {
+            background: #f0e2d2;
+            border-radius: 30px 5px 30px 5px;
+            padding: 1.5rem 1.8rem;
+            border: 2px solid #c8a889;
+            margin: 1.8rem 0 2rem;
+            box-shadow: 5px 8px 0 #b48e6e;
+        }
+        .guest-login-panel h3 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #4f3624;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #ba9b80;
+            padding-bottom: 0.5rem;
+        }
+        .guest-login-panel h3 i {
+            font-size: 1.8rem;
+            color: #8b6242;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+        .form-group {
+            flex: 1 1 200px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #5f3f29;
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: #fffbf5;
+            border: 2px solid #caaf97;
+            border-radius: 25px 5px 25px 5px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            color: #2f241b;
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #9f7253;
+            background: #ffffff;
+        }
+        .lock-btn {
+            background: #b58d6f;
+            border: none;
+            color: #fef7ed;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 0.7rem 2rem;
+            border-radius: 40px 5px 40px 5px;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #6c4f38;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.3rem;
+            border: 1px solid #ebc9ae;
+        }
+        .lock-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #6c4f38;
+        }
+        .guest-info-display {
+            background: #ecdac8;
+            border-radius: 20px;
+            padding: 0.5rem 1.3rem;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-top: 0.8rem;
+            border: 1px dashed #836b53;
+            color: #2c1d12;
+        }
+        /* rsvp panel (locked by default) */
+        .rsvp-panel {
+            background: #fcf5ea;
+            border-radius: 30px 30px 30px 10px;
+            padding: 1.5rem 1.8rem;
+            border: 2px solid #d8bba3;
+            margin: 2rem 0 1.7rem;
+            box-shadow: 10px 10px 0 #c6aa8f30;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: 0.2s;
+        }
+        .rsvp-panel.unlocked {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .question {
+            font-size: 1.7rem;
+            font-weight: 500;
+            color: #4f3624;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .question i {
+            font-size: 2rem;
+            color: #ab7e5a;
+        }
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .rsvp-btn {
+            background: #f3e3d5;
+            border: 2px solid #b58d6f;
+            color: #4e3626;
+            font-weight: 600;
+            font-size: 1.5rem;
+            padding: 0.7rem 2rem;
+            border-radius: 40px 10px 40px 10px;
+            cursor: pointer;
+            box-shadow: 5px 7px 0 #b18b6e;
+            transition: 0.1s ease-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex: 0 1 auto;
+        }
+        .rsvp-btn i {
+            font-size: 1.4rem;
+            color: #896b50;
+        }
+        .rsvp-btn.active {
+            background: #dcc2ab;
+            border-color: #7b573b;
+            box-shadow: 2px 3px 0 #7b573b;
+            transform: translate(3px, 4px);
+            color: #2b1e13;
+        }
+        .extra-note {
+            margin-top: 1.8rem;
+            padding: 1.2rem 1rem;
+            background: #f5e8d9;
+            border-radius: 30px 5px 30px 5px;
+            border-left: 8px solid #c6a07e;
+            transition: opacity 0.25s;
+        }
+        .extra-note textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px dashed #b39276;
+            background: #fffcf5;
+            border-radius: 15px 5px 15px 5px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            resize: vertical;
+            color: #3f2e20;
+            outline: none;
+        }
+        .extra-note textarea:focus {
+            border-style: solid;
+            border-color: #9f7253;
+        }
+        .extra-note label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #614329;
+        }
+        .send-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .submit-btn {
+            background: #a58368;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 30px 5px 30px 5px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fef7ed;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #5a3f2b;
+            transition: 0.1s;
+            border: 1px solid #ebd2ba;
+            font-family: 'Zilla Slab', serif;
+        }
+        .submit-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 #5a3f2b;
+        }
+        .submit-btn:disabled {
+            opacity: 0.4;
+            transform: none;
+            box-shadow: 0 5px 0 #5a3f2b;
+            cursor: not-allowed;
+        }
+        .feedback-message {
+            font-size: 1rem;
+            padding: 0.8rem;
+            border-radius: 20px;
+            background: #efe1cf;
+            color: #2b4b2b;
+            border: 2px solid #9f8b78;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        .feedback-message.show {
+            display: block;
+        }
+        .footer-note {
+            font-size: 0.9rem;
+            text-align: center;
+            color: #896e55;
+            margin-top: 2.2rem;
+            border-top: 1px solid #dccbb8;
+            padding-top: 1rem;
+        }
+        .footer-note i {
+            margin: 0 4px;
+        }
+        /* hidden iframe for form submission */
+        .hidden-iframe {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>
+            <i class="fas fa-feather-alt"></i> 
+            21st · Boho birth 
+            <i class="fas fa-moon"></i>
+        </h1>
+        <div class="subhead">
+            <i class="fas fa-map-pin"></i> RSVP before the moon wanes · 18 dec 2026
+        </div>
+
+        <!-- COUNTDOWN TIMER -->
+        <div class="countdown-box">
+            <div class="countdown-title"><i class="fas fa-hourglass-half"></i> time to RSVP</div>
+            <div class="timer" id="timer">
+                <div class="time-unit"><span class="time-num" id="days">00</span><span class="time-label">days</span></div>
+                <div class="time-unit"><span class="time-num" id="hours">00</span><span class="time-label">hours</span></div>
+                <div class="time-unit"><span class="time-num" id="minutes">00</span><span class="time-label">mins</span></div>
+                <div class="time-unit"><span class="time-num" id="seconds">00</span><span class="time-label">secs</span></div>
+            </div>
+        </div>
+
+        <!-- GUEST LOGIN (first name, last name, relationship dropdown) -->
+        <div class="guest-login-panel">
+            <h3><i class="fas fa-dreamcatcher"></i> introduce yourself</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName"><i class="fas fa-user"></i> first name</label>
+                    <input type="text" id="firstName" placeholder="e.g., Luna" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="lastName"><i class="fas fa-user"></i> last name</label>
+                    <input type="text" id="lastName" placeholder="e.g., Rivera" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="flex:2;">
+                    <label for="relationship"><i class="fas fa-leaf"></i> i'm a...</label>
+                    <select id="relationship">
+                        <option value="" disabled selected>– select one –</option>
+                        <option value="family">family</option>
+                        <option value="friend">friend</option>
+                        <option value="family-friend">family-friend</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex:1; display: flex; align-items: flex-end;">
+                    <button class="lock-btn" id="unlockRsvpBtn"><i class="fas fa-lock-open"></i> enter</button>
+                </div>
+            </div>
+            <div id="guestDisplay" class="guest-info-display" style="display: none;">
+                ✦ ready, <span id="displayName"></span> (<span id="displayRelation"></span>) ✦
+            </div>
+        </div>
+
+        <!-- RSVP section – initially locked, contains a FORM that sends to Google Sheets -->
+        <div class="rsvp-panel" id="rsvpPanel">
+            <!-- This form will submit data to your google apps script web app.
+                 The target is your script URL. We use method=POST and target a hidden iframe to avoid page reload. -->
+            <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbxyqMreZ62mATioBhNJmqW-7VDIkBL9fdH09jPoUKmARcIhYWk7r6_wYZ1STi82vLPW6A/exec" method="POST" target="hiddenIframe">
+                <!-- Hidden inputs will be filled by JavaScript before submit -->
+                <input type="hidden" name="firstName" id="hiddenFirstName">
+                <input type="hidden" name="lastName" id="hiddenLastName">
+                <input type="hidden" name="relationship" id="hiddenRelationship">
+                <input type="hidden" name="rsvp" id="hiddenRsvp">
+                <input type="hidden" name="note" id="hiddenNote">
+                <input type="hidden" name="timestamp" id="hiddenTimestamp">
+
+                <div class="question">
+                    <i class="fas fa-hamsa"></i> will you be there?
+                </div>
+                <div class="btn-row">
+                    <!-- important: these buttons are type="button" to avoid submitting the form -->
+                    <button class="rsvp-btn" type="button" id="btnYes"><i class="fas fa-smile"></i> yes</button>
+                    <button class="rsvp-btn" type="button" id="btnNo"><i class="fas fa-frown"></i> no</button>
+                    <button class="rsvp-btn other-btn" type="button" id="btnOther"><i class="fas fa-spa"></i> other</button>
+                </div>
+
+                <!-- note section (only shown when 'other' selected) -->
+                <div class="extra-note" id="noteSection" style="opacity: 0; display: none;">
+                    <label for="otherMessage"><i class="fas fa-pencil-alt"></i> leave a kind note (optional):</label>
+                    <textarea id="otherMessage" name="otherMessage" rows="2" placeholder="sending good vibes..."></textarea>
+                </div>
+
+                <div class="send-section">
+                    <!-- this button triggers the manual form submission -->
+                    <button class="submit-btn" type="button" id="submitRSVP"><i class="fas fa-paper-plane"></i> send RSVP</button>
+                </div>
+            </form>
+            <div class="feedback-message" id="feedback"></div>
+        </div>
+
+        <!-- hidden iframe to receive form response without reload -->
+        <iframe name="hiddenIframe" class="hidden-iframe"></iframe>
+
+        <div class="footer-note">
+            <i class="fas fa-circle"></i> 18 march → 18 december  <i class="fas fa-circle"></i> just for the birthday spirit
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- COUNTDOWN ----------
+            function updateCountdown() {
+                const target = new Date(2026, 11, 18, 23, 59, 59);
+                const now = new Date();
+                const diffMs = target - now;
+                if (diffMs <= 0) {
+                    document.getElementById('days').innerText = '00';
+                    document.getElementById('hours').innerText = '00';
+                    document.getElementById('minutes').innerText = '00';
+                    document.getElementById('seconds').innerText = '00';
+                    return;
+                }
+                const totalSeconds = Math.floor(diffMs / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // ---------- GUEST LOGIC (unlock RSVP) ----------
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const relationshipSelect = document.getElementById('relationship');
+            const unlockBtn = document.getElementById('unlockRsvpBtn');
+            const rsvpPanel = document.getElementById('rsvpPanel');
+            const guestDisplay = document.getElementById('guestDisplay');
+            const displayNameSpan = document.getElementById('displayName');
+            const displayRelationSpan = document.getElementById('displayRelation');
+
+            let guest = { firstName: '', lastName: '', relation: '' };
+
+            function validateGuestInput() {
+                const first = firstNameInput.value.trim();
+                const last = lastNameInput.value.trim();
+                const rel = relationshipSelect.value;
+                return first !== '' && last !== '' && rel !== '' && rel !== null;
+            }
+
+            unlockBtn.addEventListener('click', function() {
+                if (!validateGuestInput()) {
+                    alert('🌿 please fill in first name, last name, and select a relationship.');
+                    return;
+                }
+                guest.firstName = firstNameInput.value.trim();
+                guest.lastName = lastNameInput.value.trim();
+                guest.relation = relationshipSelect.value;
+
+                displayNameSpan.innerText = guest.firstName + ' ' + guest.lastName;
+                let relDisplay = guest.relation === 'family-friend' ? 'family‑friend' : guest.relation;
+                displayRelationSpan.innerText = relDisplay;
+                guestDisplay.style.display = 'inline-block';
+
+                rsvpPanel.classList.add('unlocked');
+                unlockBtn.disabled = true;
+                unlockBtn.style.opacity = '0.6';
+                unlockBtn.style.pointerEvents = 'none';
+            });
+
+            // ---------- RSVP selection (active styling, note toggling) ----------
+            let selectedOption = null;   // 'yes', 'no', 'other'
+            let otherNote = '';
+
+            const btnYes = document.getElementById('btnYes');
+            const btnNo = document.getElementById('btnNo');
+            const btnOther = document.getElementById('btnOther');
+            const noteSection = document.getElementById('noteSection');
+            const otherMessageArea = document.getElementById('otherMessage');
+
+            function setActive(option) {
+                [btnYes, btnNo, btnOther].forEach(btn => btn.classList.remove('active'));
+                if (option === 'yes') btnYes.classList.add('active');
+                if (option === 'no') btnNo.classList.add('active');
+                if (option === 'other') btnOther.classList.add('active');
+
+                if (option === 'other') {
+                    noteSection.style.display = 'block';
+                    setTimeout(() => noteSection.style.opacity = '1', 10);
+                } else {
+                    noteSection.style.opacity = '0';
+                    setTimeout(() => { if (selectedOption !== 'other') noteSection.style.display = 'none'; }, 250);
+                }
+            }
+
+            btnYes.addEventListener('click', () => {
+                if (!rsvpPanel.classList.contains('unlocked')) { alert('🔒 please introduce yourself first.'); return; }
+                selectedOption = 'yes';
+                setActive('yes');
+            });
+            btnNo.addEventListener('click', () => {
+                if (!rsvpPanel.classList.contains('unlocked')) { alert('🔒 please introduce yourself first.'); return; }
+                selectedOption = 'no';
+                setActive('no');
+            });
+            btnOther.addEventListener('click', () => {
+                if (!rsvpPanel.classList.contains('unlocked')) { alert('🔒 please introduce yourself first.'); return; }
+                selectedOption = 'other';
+                setActive('other');
+            });
+
+            otherMessageArea.addEventListener('input', (e) => {
+                otherNote = e.target.value;
+            });
+
+            // ---------- FORM SUBMISSION (via hidden iframe, avoids doGet error) ----------
+            const submitBtn = document.getElementById('submitRSVP');
+            const feedbackDiv = document.getElementById('feedback');
+            const rsvpForm = document.getElementById('rsvpForm');
+
+            // Hidden fields
+            const hiddenFirstName = document.getElementById('hiddenFirstName');
+            const hiddenLastName = document.getElementById('hiddenLastName');
+            const hiddenRelationship = document.getElementById('hiddenRelationship');
+            const hiddenRsvp = document.getElementById('hiddenRsvp');
+            const hiddenNote = document.getElementById('hiddenNote');
+            const hiddenTimestamp = document.getElementById('hiddenTimestamp');
+
+            // Listen to iframe load to detect submission completed (optional feedback)
+            const hiddenIframe = document.querySelector('iframe[name="hiddenIframe"]');
+            hiddenIframe.addEventListener('load', function() {
+                // This runs after the form submission returns (even if it's an empty response)
+                // We'll show a success message, but note: Google script often returns nothing.
+                if (submitBtn.disabled) {  // if we actually triggered a submission
+                    feedbackDiv.innerText = '✔️ RSVP sent (only you can see this). thank you!';
+                    feedbackDiv.classList.add('show');
+                    setTimeout(() => feedbackDiv.classList.remove('show'), 4000);
+                    submitBtn.disabled = false;  // re-enable for possible later edits (optional)
+                }
+            });
+
+            submitBtn.addEventListener('click', function() {
+                if (!rsvpPanel.classList.contains('unlocked') || !guest.firstName) {
+                    feedbackDiv.innerText = '🪷 please enter your details first.';
+                    feedbackDiv.classList.add('show');
+                    setTimeout(() => feedbackDiv.classList.remove('show'), 2500);
+                    return;
+                }
+                if (!selectedOption) {
+                    feedbackDiv.innerText = '✨ please select yes, no or other.';
+                    feedbackDiv.classList.add('show');
+                    setTimeout(() => feedbackDiv.classList.remove('show'), 2500);
+                    return;
+                }
+
+                // prepare final note
+                let finalNote = '';
+                if (selectedOption === 'other') {
+                    finalNote = otherMessageArea.value.trim() || '(no note)';
+                }
+
+                // Fill hidden fields
+                hiddenFirstName.value = guest.firstName;
+                hiddenLastName.value = guest.lastName;
+                hiddenRelationship.value = guest.relation;
+                hiddenRsvp.value = selectedOption;
+                hiddenNote.value = finalNote;
+                hiddenTimestamp.value = new Date().toLocaleString('en-GB', { timeZone: 'UTC' });
+
+                // Disable submit button to prevent double-sending
+                submitBtn.disabled = true;
+
+                // Submit the form to the hidden iframe
+                rsvpForm.submit();
+
+                // (Optional) show optimistic message, but we'll rely on iframe load for final.
+                feedbackDiv.innerText = '⏳ sending your response...';
+                feedbackDiv.classList.add('show');
+
+                // The iframe 'load' event will show final success message and re-enable button.
+                // However, if iframe doesn't fire (some scripts don't), we set a backup timeout.
+                setTimeout(() => {
+                    if (submitBtn.disabled) {
+                        // If still disabled, assume success and re-enable.
+                        submitBtn.disabled = false;
+                        feedbackDiv.innerText = '✔️ done (sheet updated).';
+                        // keep visible for a bit
+                        setTimeout(() => feedbackDiv.classList.remove('show'), 2500);
+                    }
+                }, 3000);
+            });
+
+            // Hide note initially
+            noteSection.style.display = 'none';
+            noteSection.style.opacity = '0';
+        })();
+    </script>
+    <!-- note: your Google Sheets endpoint is embedded in form action -->
+</body>
+</html>
